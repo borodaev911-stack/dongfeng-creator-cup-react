@@ -1,3 +1,4 @@
+import { calculateFund } from './prizeFund.js';
 import { PrivacyProvider, RegistrationGate, PrivacyLinks } from './Privacy.jsx';
 import participationArt from './assets/participation-steps.webp';
 import { VideoBrief, PrizeShares, Engagement, ContestFAQ, ContestRules } from './ContestDetails.jsx';
@@ -6,7 +7,7 @@ import asset3 from './assets/asc-auto-logo-complete.png';
 import asset4 from './assets/dongfeng-logo.svg';
 import asset5 from './assets/duel.webp';
 import asset6 from './assets/telegram-optimized.jpg';
-const formatFund = views => new Intl.NumberFormat('ru-RU').format(views * 100000);
+const formatFund = views => new Intl.NumberFormat('ru-RU').format(calculateFund(views * 1000000));
 function LogoGlint({
   model
 }) {
@@ -32,9 +33,9 @@ function ParticipationSteps() {
 }
 function PrizeFund() {
   const [views, setViews] = useState(5);
-  return <section className="block fund-section" id="fund"><div className="wrap fund-grid"><div><div className="eyebrow">{"03 / Больше просмотров — больше фонд"}</div><h2>{"Разгоняем"}<br />{"до миллиона."}</h2><p className="formula">{"1 млн просмотров"}<br />{"= +100 000 ₽ в фонд"}</p><p className="lead">{"Наша общая цель — 10 млн просмотров и призовой фонд 1 000 000 ₽. Ролики участников помогают приблизиться к этой цели."}</p><p className="fine">{"Речь об общем призовом фонде конкурса, а не об автоматической выплате каждому автору за просмотры. Максимальный фонд — 1 000 000 ₽."}</p></div><div className="sim"><label htmlFor="views">{"Посмотри, как растёт фонд · пример расчёта"}</label><div className="sim-output"><output id="viewsValue" htmlFor="views">{views.toLocaleString("ru-RU")}</output>{" млн просмотров"}</div><input id="views" type="range" min="0" max="10" step="0.1" value={views} onChange={event => setViews(Number(event.target.value))} aria-label="Миллионы просмотров для примера расчёта, шаг 0,1 миллиона" /><div className="fund-meter" aria-hidden="true"><span id="fundMeter" style={{
-            transform: `scaleX(${views / 10})`
-          }} /></div><div className="scale"><span>{"0"}</span><span>{"Цель: 10 млн"}</span></div><div className="sim-result">{"Общий призовой фонд"}<output id="fundValue" htmlFor="views"><strong>{formatFund(views)} ₽</strong></output></div><PrizeShares fund={views * 100000} /><p className="fine">{"Это пример механики, не счётчик текущих результатов. Фонд растёт пропорционально: один учтённый просмотр добавляет 0,10 ₽. Максимум — 1 000 000 ₽."}</p></div></div></section>;
+  return <section className="block fund-section" id="fund"><div className="wrap fund-grid"><div><div className="eyebrow">{"03 / Больше просмотров — больше фонд"}</div><h2>{"Разгоняем"}<br />{"до миллиона."}</h2><p className="formula">{"Каждый полный 1 млн просмотров"}<br />{"= +100 000 ₽ в фонд"}</p><p className="lead">{"Наша общая цель — 10 млн просмотров и призовой фонд 1 000 000 ₽. Ролики участников помогают приблизиться к этой цели."}</p><p className="fine">{"Речь об общем призовом фонде конкурса, а не об автоматической выплате каждому автору за просмотры. Максимальный фонд — 1 000 000 ₽."}</p></div><div className="sim"><label htmlFor="views">{"Посмотри, как растёт фонд · пример расчёта"}</label><div className="sim-output"><output id="viewsValue" htmlFor="views">{views.toLocaleString("ru-RU")}</output>{" млн просмотров"}</div><input id="views" type="range" min="0" max="10" step="0.1" value={views} onChange={event => setViews(Number(event.target.value))} aria-label="Миллионы просмотров для примера расчёта, шаг 0,1 миллиона" /><div className="fund-meter" aria-hidden="true"><span id="fundMeter" style={{
+            transform: `scaleX(${calculateFund(views * 1000000) / 1000000})`
+          }} /></div><div className="scale"><span>{"0"}</span><span>{"Цель: 10 млн"}</span></div><div className="sim-result">{"Общий призовой фонд"}<output id="fundValue" htmlFor="views"><strong>{formatFund(views)} ₽</strong></output></div><PrizeShares fund={calculateFund(views * 1000000)} /><p className="fine">{"Это пример механики, не счётчик текущих результатов. Каждый полный миллион учтённых просмотров добавляет 100 000 ₽. Например, 7,4 млн просмотров = 700 000 ₽. До первого полного миллиона фонд — 0 ₽. Максимум — 1 000 000 ₽."}</p></div></div></section>;
 }
 function Registration() {
   return <section className="block" id="registration"><div className="wrap"><div className="registration"><div><div className="eyebrow">{"04 / Твой выход"}</div><h2>{"Камера готова?"}<br />{"Принимай вызов."}</h2><p className="lead">{"Выбери MAGE или HUGE и стань частью противостояния. Первый шаг — регистрация в Telegram-боте АСЦ."}</p><p className="date">{"Подведение итогов — 12 октября"}</p><p className="fine">{"Требования к видео, распределение фонда и проект порядка определения победителей — в правилах конкурса ниже."}</p></div><RegistrationGate className="telegram"><img src={asset6} alt="Telegram" loading="lazy" /><span className="btn">{"Зарегистрироваться "}<b>{"↗"}</b></span><small>{"Перейти в @Ascauth_bot"}</small></RegistrationGate></div><ContestFAQ /></div></section>;
